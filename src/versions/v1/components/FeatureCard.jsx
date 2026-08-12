@@ -1,4 +1,4 @@
-import { useInView } from "../hooks/useInView";
+import { useInView } from "../../../hooks/useInView";
 import "../styles/FeatureCard.css";
 
 // A single "exhibit": a small framed image with a bronze plaque beneath it,

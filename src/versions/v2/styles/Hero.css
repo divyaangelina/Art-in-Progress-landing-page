@@ -1,0 +1,328 @@
+.v2-hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  background: #0B0A09;
+  overflow: hidden;
+  /* Pointer spotlight defaults — usePointerSpotlight overwrites these. */
+  --px: 50%;
+  --py: 40%;
+}
+
+/* ---- lighting rig ------------------------------------------------------ */
+
+/* Fixed key light: aimed at the artwork side, rises over ~2.4s. */
+.v2-hero__keylight {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 55% 60% at 68% 42%,
+    rgba(255, 244, 220, 0.5) 0%,
+    rgba(255, 244, 220, 0.12) 38%,
+    rgba(255, 244, 220, 0) 72%
+  );
+  opacity: 0;
+  transition: opacity var(--duration-spotlight) var(--ease-enter);
+  pointer-events: none;
+}
+
+.v2-hero.is-lit .v2-hero__keylight {
+  opacity: 1;
+}
+
+/* Soft fill light that follows the cursor. Deliberately weak — it should
+   feel like the room reacting, not a flashlight. */
+.v2-hero__pointerlight {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle 380px at var(--px) var(--py),
+    rgba(255, 244, 220, 0.09) 0%,
+    rgba(255, 244, 220, 0) 65%
+  );
+  opacity: 0;
+  transition: opacity var(--duration-slow) var(--ease-enter) 1600ms;
+  pointer-events: none;
+}
+
+.v2-hero.is-lit .v2-hero__pointerlight {
+  opacity: 1;
+}
+
+.v2-hero__vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 90% 80% at 50% 50%,
+    transparent 40%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+  pointer-events: none;
+}
+
+/* ---- layout ------------------------------------------------------------ */
+
+.v2-hero__content {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: var(--space-2xl);
+  align-items: center;
+  /* Sized so the whole hero — headline, CTA and scroll cue — clears a
+     short laptop viewport without the cue falling below the fold. */
+  padding-top: clamp(4rem, 9vh, 7rem);
+  padding-bottom: clamp(5rem, 11vh, 8rem);
+  width: 100%;
+}
+
+/* ---- copy -------------------------------------------------------------- */
+
+.v2-hero__eyebrow {
+  color: var(--color-gold-faint);
+  margin-bottom: var(--space-md);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity var(--duration-slow) var(--ease-enter) 700ms,
+    transform var(--duration-slow) var(--ease-enter) 700ms;
+}
+
+.v2-hero.is-lit .v2-hero__eyebrow {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Slightly tighter than the global display scale. The full --scale-display
+   ran to four lines in this column, which pushed the CTA and scroll cue
+   under the fold on a laptop; this holds it to three. */
+.v2-hero__headline {
+  font-size: clamp(2.5rem, 4.6vw, 4.5rem);
+  color: var(--color-marble);
+  letter-spacing: var(--tracking-tight);
+  max-width: 15ch;
+  text-wrap: balance;
+}
+
+.v2-hero__subhead,
+.v2-hero__cta {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity var(--duration-slow) var(--ease-enter),
+    transform var(--duration-slow) var(--ease-enter);
+}
+
+.v2-hero__subhead {
+  margin-top: var(--space-md);
+  font-size: var(--scale-body-lg);
+  line-height: var(--line-relaxed);
+  color: var(--color-gold-faint);
+  max-width: 42ch;
+  /* Lands after the headline's last word. */
+  transition-delay: 1900ms;
+}
+
+.v2-hero.is-lit .v2-hero__subhead,
+.v2-hero.is-lit .v2-hero__cta {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---- CTA: a light coming up inside the button --------------------------- */
+
+.v2-hero__cta {
+  position: relative;
+  margin-top: var(--space-lg);
+  background: transparent;
+  color: var(--color-gold-faint);
+  border: 1px solid rgba(176, 141, 87, 0.55);
+  padding: 1.05rem 2.5rem;
+  font-family: var(--font-plaque);
+  font-size: var(--scale-caption);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  isolation: isolate;
+  transition-delay: 2100ms;
+  transition-property: opacity, transform, color, border-color, box-shadow;
+  transition-duration: var(--duration-slow), var(--duration-slow),
+    var(--duration-fast), var(--duration-fast), var(--duration-fast);
+  transition-timing-function: var(--ease-enter), var(--ease-enter),
+    var(--ease-standard), var(--ease-standard), var(--ease-standard);
+}
+
+/* Gold sweeps up from the bottom edge on hover. */
+.v2-hero__cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--color-gold);
+  transform: translateY(101%);
+  transition: transform var(--duration-base) var(--ease-curtain);
+}
+
+.v2-hero__cta:hover,
+.v2-hero__cta:focus-visible {
+  color: var(--color-night);
+  border-color: var(--color-gold);
+  box-shadow: var(--shadow-glow-gold);
+}
+
+.v2-hero__cta:hover::before,
+.v2-hero__cta:focus-visible::before {
+  transform: translateY(0);
+}
+
+.v2-hero__cta-label {
+  position: relative;
+}
+
+/* ---- artwork ----------------------------------------------------------- */
+
+.v2-hero__artwork {
+  /* --progress is written by useElementScrollProgress (0 at centre, 1 on
+     exit). Multiplying it gives the painting a slow upward drift while the
+     copy holds still. */
+  --drift: calc(var(--progress, 0) * -72px);
+  transform: translateY(var(--drift));
+  will-change: transform;
+}
+
+.v2-hero__frame {
+  position: relative;
+  margin: 0;
+  background: var(--frame-bg);
+  padding: var(--frame-mat);
+  border: var(--frame-border-inner);
+  border-radius: var(--radius-frame);
+  box-shadow: var(--shadow-frame-lit);
+  opacity: 0;
+  transform: translateY(-18px) scale(0.985);
+  transition: opacity var(--duration-drift) var(--ease-enter) 500ms,
+    transform var(--duration-drift) var(--ease-curtain) 500ms;
+}
+
+.v2-hero.is-lit .v2-hero__frame {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.v2-hero__frame img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  /* Cap on short viewports so the painting never pushes the CTA and cue
+     off screen; object-fit crops rather than distorting. */
+  max-height: 58svh;
+  object-fit: cover;
+  display: block;
+}
+
+/* Museum wall label, hanging under the frame. */
+.v2-hero__plaque {
+  position: absolute;
+  left: var(--frame-mat);
+  bottom: calc(var(--space-lg) * -1);
+  display: flex;
+  gap: var(--space-sm);
+  font-family: var(--font-plaque);
+  font-size: var(--scale-plaque);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-gold-faint);
+  opacity: 0;
+  transition: opacity var(--duration-slow) var(--ease-enter) 2200ms;
+}
+
+.v2-hero__plaque span + span {
+  padding-left: var(--space-sm);
+  border-left: 1px solid rgba(217, 195, 152, 0.3);
+}
+
+.v2-hero.is-lit .v2-hero__plaque {
+  opacity: 0.75;
+}
+
+/* ---- scroll cue -------------------------------------------------------- */
+
+.v2-hero__cue {
+  position: absolute;
+  left: 50%;
+  bottom: var(--space-lg);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  font-family: var(--font-plaque);
+  font-size: var(--scale-plaque);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--color-ink-faint);
+  opacity: 0;
+  transition: opacity var(--duration-slow) var(--ease-enter) 2600ms;
+  z-index: 1;
+}
+
+.v2-hero.is-lit .v2-hero__cue {
+  opacity: 1;
+}
+
+.v2-hero__cue-line {
+  width: 1px;
+  height: 48px;
+  background: linear-gradient(
+    to bottom,
+    rgba(176, 141, 87, 0.6),
+    rgba(176, 141, 87, 0)
+  );
+  transform-origin: top;
+  animation: v2-cue-drop 2.6s var(--ease-standard) infinite;
+}
+
+@keyframes v2-cue-drop {
+  0%,
+  100% {
+    transform: scaleY(0.35);
+    opacity: 0.35;
+  }
+  45% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+/* ---- responsive -------------------------------------------------------- */
+
+@media (max-width: 900px) {
+  .v2-hero__content {
+    grid-template-columns: 1fr;
+    padding-top: var(--space-2xl);
+    padding-bottom: var(--space-3xl);
+  }
+
+  .v2-hero__artwork {
+    order: -1;
+    max-width: 420px;
+    --drift: calc(var(--progress, 0) * -36px);
+  }
+
+  .v2-hero__headline {
+    max-width: none;
+  }
+
+  .v2-hero__cue {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v2-hero__artwork {
+    transform: none;
+  }
+
+  .v2-hero__cue-line {
+    animation: none;
+  }
+}

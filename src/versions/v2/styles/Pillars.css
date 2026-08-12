@@ -1,0 +1,158 @@
+.v2-pillars {
+  background: var(--color-wall-deep);
+}
+
+.v2-pillars__header {
+  text-align: center;
+  max-width: 40ch;
+  margin: 0 auto clamp(3rem, 7vw, 5rem);
+}
+
+.v2-pillars__heading {
+  margin-top: var(--space-sm);
+  font-size: var(--scale-h1);
+}
+
+.v2-pillars__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-xl);
+}
+
+/* ---- a single exhibit --------------------------------------------------- */
+
+.v2-pillar {
+  position: relative;
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity var(--duration-slow) var(--ease-enter) var(--stagger, 0ms),
+    transform var(--duration-slow) var(--ease-curtain) var(--stagger, 0ms);
+}
+
+.v2-pillar.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Oversized numeral set behind the frame, like a gallery room number. */
+.v2-pillar__numeral {
+  position: absolute;
+  top: -0.45em;
+  left: -0.1em;
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 7vw, 6.5rem);
+  font-weight: var(--weight-light);
+  line-height: 1;
+  color: var(--color-gold);
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity var(--duration-slow) var(--ease-enter)
+      calc(var(--stagger, 0ms) + 200ms),
+    transform var(--duration-slow) var(--ease-curtain)
+      calc(var(--stagger, 0ms) + 200ms);
+  pointer-events: none;
+}
+
+.v2-pillar.is-visible .v2-pillar__numeral {
+  opacity: 0.16;
+  transform: translateY(0);
+}
+
+.v2-pillar__frame {
+  position: relative;
+  background: var(--frame-bg);
+  padding: var(--frame-mat);
+  border: var(--frame-border-inner);
+  border-radius: var(--radius-frame);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  transition: box-shadow var(--duration-base) var(--ease-standard),
+    transform var(--duration-base) var(--ease-standard);
+}
+
+.v2-pillar:hover .v2-pillar__frame {
+  box-shadow: var(--shadow-frame-hover);
+  transform: translateY(-6px);
+}
+
+.v2-pillar__frame img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
+  /* Uncovered from the bottom up as the card enters, then eased in on
+     hover — the mat sliding away from the art. */
+  clip-path: inset(0 0 100% 0);
+  transform: scale(1.06);
+  transition: clip-path var(--duration-curtain) var(--ease-curtain)
+      calc(var(--stagger, 0ms) + 260ms),
+    transform var(--duration-drift) var(--ease-standard);
+}
+
+.v2-pillar.is-visible .v2-pillar__frame img {
+  clip-path: inset(0 0 0 0);
+  transform: scale(1);
+}
+
+.v2-pillar:hover .v2-pillar__frame img {
+  transform: scale(1.05);
+}
+
+/* ---- wall label --------------------------------------------------------- */
+
+.v2-pillar__plaque {
+  margin-top: var(--space-md);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--color-marble-vein);
+  position: relative;
+}
+
+/* Gold underline that draws across the label on hover. */
+.v2-pillar__plaque::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--color-gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--duration-base) var(--ease-curtain);
+}
+
+.v2-pillar:hover .v2-pillar__plaque::before {
+  transform: scaleX(1);
+}
+
+.v2-pillar__title {
+  font-family: var(--font-plaque);
+  font-size: var(--scale-caption);
+  font-weight: var(--weight-regular);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
+.v2-pillar__description {
+  margin-top: var(--space-xs);
+  font-size: var(--scale-body);
+  line-height: var(--line-relaxed);
+  color: var(--color-ink-soft);
+}
+
+@media (max-width: 900px) {
+  .v2-pillars__grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+    max-width: 460px;
+    margin: 0 auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v2-pillar__frame img {
+    clip-path: none;
+    transform: none;
+  }
+}

@@ -1,0 +1,24 @@
+.v2-scroll-rail {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: rgba(176, 141, 87, 0.12);
+  z-index: 100;
+  pointer-events: none;
+}
+
+.v2-scroll-rail__fill {
+  display: block;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    var(--color-gold-deep),
+    var(--color-gold),
+    var(--color-spotlight-warm)
+  );
+  transform-origin: left;
+  transform: scaleX(0);
+  box-shadow: 0 0 10px rgba(176, 141, 87, 0.6);
+}

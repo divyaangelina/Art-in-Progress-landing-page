@@ -1,6 +1,6 @@
 import FramedArtwork from "./FramedArtwork";
-import { galleryImages } from "../theme/assets";
-import { useInView } from "../hooks/useInView";
+import { galleryImages } from "../../../theme/assets";
+import { useInView } from "../../../hooks/useInView";
 import "../styles/About.css";
 
 // Two-column philosophy statement. Talks less about the company and more

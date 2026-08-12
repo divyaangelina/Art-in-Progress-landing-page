@@ -1,0 +1,332 @@
+.v2-timeline {
+  position: relative;
+  background: var(--color-night);
+  color: var(--color-marble);
+  overflow: hidden;
+}
+
+/* Faint warm wash so the corridor doesn't read as flat black. Bounded to a
+   band at the top rather than `inset: 0` — this section runs several
+   thousand pixels tall, and a gradient that size is expensive to repaint. */
+.v2-timeline::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 70vh;
+  background: radial-gradient(
+    ellipse 70% 100% at 50% 0%,
+    rgba(176, 141, 87, 0.1) 0%,
+    rgba(176, 141, 87, 0) 65%
+  );
+  pointer-events: none;
+}
+
+.v2-timeline > .container {
+  position: relative;
+}
+
+/* ---- header ------------------------------------------------------------ */
+
+.v2-timeline__header {
+  text-align: center;
+  max-width: 46ch;
+  margin: 0 auto clamp(3.5rem, 8vw, 6rem);
+}
+
+.v2-timeline__heading {
+  margin-top: var(--space-sm);
+  font-size: var(--scale-h1);
+  color: var(--color-marble);
+}
+
+.v2-timeline__subhead {
+  margin-top: var(--space-md);
+  font-size: var(--scale-body-lg);
+  line-height: var(--line-relaxed);
+  color: var(--color-gold-faint);
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity var(--duration-slow) var(--ease-enter) 500ms,
+    transform var(--duration-slow) var(--ease-enter) 500ms;
+}
+
+.v2-timeline__header.is-visible .v2-timeline__subhead {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---- the rail ---------------------------------------------------------- */
+
+.v2-timeline__track {
+  position: relative;
+}
+
+.v2-timeline__rail {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: var(--timeline-rail-width);
+  transform: translateX(-50%);
+  background: var(--timeline-rail-track);
+}
+
+/* The drawn line. --progress is written onto .v2-timeline__rail by
+   useElementScrollProgress (measured against the track), so the fill height
+   tracks scroll position rather than time. The rail has only these two
+   children, so the custom property's style invalidation stays contained. */
+.v2-timeline__rail-fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    var(--color-gold) 0%,
+    var(--color-gold-faint) 100%
+  );
+  transform: scaleY(var(--progress, 0));
+  transform-origin: top;
+  will-change: transform;
+}
+
+/* The bright head of the line, riding the fill downward. It's a sibling of
+   the fill rather than a child: nesting it inside a scaleY'd element would
+   stretch its glow by the inverse of the fill's scale, which balloons into
+   a very expensive layer near the top of the timeline. */
+.v2-timeline__rail-head {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--progress, 0) * 100%);
+  width: 28px;
+  height: 28px;
+  margin: -14px 0 0 -14px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 244, 220, 0.95) 0%,
+    rgba(255, 244, 220, 0.45) 20%,
+    rgba(255, 244, 220, 0) 62%
+  );
+  /* Fades in once the line has actually started drawing. */
+  opacity: clamp(0, calc(var(--progress, 0) * 12), 1);
+  pointer-events: none;
+}
+
+/* ---- milestones -------------------------------------------------------- */
+
+.v2-timeline__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3rem, 7vw, 5.5rem);
+}
+
+.v2-milestone {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr var(--space-2xl) 1fr;
+  align-items: center;
+}
+
+.v2-milestone--left .v2-milestone__card {
+  grid-column: 1;
+  text-align: right;
+  --slide-from: -40px;
+}
+
+.v2-milestone--right .v2-milestone__card {
+  grid-column: 3;
+  text-align: left;
+  --slide-from: 40px;
+}
+
+/* ---- node -------------------------------------------------------------- */
+
+.v2-milestone__node {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: var(--timeline-node-size-current);
+  height: var(--timeline-node-size-current);
+  display: grid;
+  place-items: center;
+}
+
+.v2-milestone__node-core {
+  width: var(--timeline-node-size);
+  height: var(--timeline-node-size);
+  border-radius: var(--radius-pill);
+  background: var(--color-night);
+  border: 1px solid rgba(176, 141, 87, 0.45);
+  transform: scale(0.6);
+  transition: transform var(--duration-ignite) var(--ease-curtain),
+    background var(--duration-ignite) var(--ease-standard),
+    box-shadow var(--duration-ignite) var(--ease-standard),
+    border-color var(--duration-ignite) var(--ease-standard);
+}
+
+.v2-milestone.is-visible .v2-milestone__node-core {
+  transform: scale(1);
+}
+
+/* Completed steps: solid gold, lit. */
+.v2-milestone--done.is-visible .v2-milestone__node-core {
+  background: var(--color-gold);
+  border-color: var(--color-gold);
+  box-shadow: var(--shadow-node-lit);
+}
+
+/* The step we're on: larger, brighter, and pulsing. */
+.v2-milestone--current.is-visible .v2-milestone__node-core {
+  background: var(--color-spotlight-warm);
+  border-color: var(--color-spotlight-warm);
+  box-shadow: 0 0 0 6px rgba(255, 244, 220, 0.14),
+    0 0 28px rgba(255, 244, 220, 0.7);
+  transform: scale(1.25);
+}
+
+.v2-milestone__node-pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 244, 220, 0.5);
+  opacity: 0;
+}
+
+.v2-milestone--current.is-visible .v2-milestone__node-pulse {
+  animation: v2-node-pulse 2.8s var(--ease-standard) 400ms infinite;
+}
+
+@keyframes v2-node-pulse {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.8;
+  }
+  70%,
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+/* Not started yet: hollow and dim. */
+.v2-milestone--next .v2-milestone__node-core {
+  background: transparent;
+  border-style: dashed;
+  border-color: rgba(176, 141, 87, 0.4);
+}
+
+/* ---- card -------------------------------------------------------------- */
+
+.v2-milestone__card {
+  opacity: 0;
+  transform: translateX(var(--slide-from, 0)) translateY(12px);
+  transition: opacity var(--duration-slow) var(--ease-enter) 120ms,
+    transform var(--duration-slow) var(--ease-curtain) 120ms;
+}
+
+.v2-milestone.is-visible .v2-milestone__card {
+  opacity: 1;
+  transform: translateX(0) translateY(0);
+}
+
+.v2-milestone__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-family: var(--font-plaque);
+  font-size: var(--scale-plaque);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-gold-faint);
+}
+
+.v2-milestone--left .v2-milestone__meta {
+  justify-content: flex-end;
+}
+
+.v2-milestone__marker {
+  color: var(--color-gold);
+}
+
+.v2-milestone__date {
+  color: var(--color-ink-faint);
+}
+
+.v2-milestone__badge {
+  padding: 0.25rem 0.6rem;
+  border: 1px solid rgba(255, 244, 220, 0.35);
+  border-radius: var(--radius-pill);
+  color: var(--color-spotlight-warm);
+  font-size: 0.5625rem;
+}
+
+.v2-milestone__title {
+  margin-top: var(--space-sm);
+  font-size: var(--scale-h3);
+  color: var(--color-marble);
+}
+
+.v2-milestone--next .v2-milestone__title {
+  color: var(--color-gold-faint);
+}
+
+.v2-milestone__description {
+  margin-top: var(--space-xs);
+  font-size: var(--scale-body);
+  line-height: var(--line-relaxed);
+  color: var(--color-ink-faint);
+  max-width: 40ch;
+}
+
+.v2-milestone--left .v2-milestone__description {
+  margin-left: auto;
+}
+
+/* ---- mobile: rail moves to the left edge, cards stack beside it --------- */
+
+@media (max-width: 820px) {
+  .v2-timeline__rail {
+    left: 7px;
+    transform: none;
+  }
+
+  .v2-milestone {
+    grid-template-columns: 1fr;
+  }
+
+  .v2-milestone__node {
+    left: 7px;
+    top: 0;
+    transform: translate(-50%, 0);
+  }
+
+  .v2-milestone--left .v2-milestone__card,
+  .v2-milestone--right .v2-milestone__card {
+    grid-column: 1;
+    text-align: left;
+    padding-left: var(--space-lg);
+    --slide-from: 28px;
+  }
+
+  .v2-milestone--left .v2-milestone__meta {
+    justify-content: flex-start;
+  }
+
+  .v2-milestone--left .v2-milestone__description {
+    margin-left: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v2-timeline__rail-fill {
+    transform: scaleY(1);
+  }
+
+  .v2-milestone--current.is-visible .v2-milestone__node-pulse {
+    animation: none;
+  }
+}

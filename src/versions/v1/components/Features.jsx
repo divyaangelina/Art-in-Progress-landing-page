@@ -1,5 +1,5 @@
 import FeatureCard from "./FeatureCard";
-import { galleryImages } from "../theme/assets";
+import { galleryImages } from "../../../theme/assets";
 import "../styles/Features.css";
 
 const pillars = [

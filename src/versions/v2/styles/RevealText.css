@@ -1,0 +1,37 @@
+.reveal-text {
+  display: block;
+}
+
+/* The mask is what makes this read as "assembling" instead of "fading":
+   each word is clipped to its own line box, so it arrives from nowhere. */
+.reveal-text__mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  /* Room for descenders (g, y, p) so the mask never shaves them off. */
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+.reveal-text__word {
+  display: inline-block;
+  transform: translateY(110%);
+  opacity: 0;
+  transition: transform var(--duration-reveal) var(--ease-curtain),
+    opacity var(--duration-reveal) var(--ease-curtain);
+  will-change: transform;
+}
+
+.reveal-text.is-played .reveal-text__word {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Reduced motion: global.css already collapses the timing, but the words
+   must still end up visible rather than parked below their mask. */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-text__word {
+    transform: none;
+    opacity: 1;
+  }
+}

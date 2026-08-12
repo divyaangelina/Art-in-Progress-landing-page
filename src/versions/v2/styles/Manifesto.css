@@ -1,0 +1,153 @@
+/* ---- interstitial: the curtain wipe between dark and light -------------- */
+
+.v2-interstitial {
+  position: relative;
+  background: var(--color-night);
+  color: var(--color-marble);
+  padding: clamp(4rem, 10vw, 7rem) 0;
+  overflow: hidden;
+}
+
+/* Gold sheet that sweeps left→right across the statement as it enters. */
+.v2-interstitial::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    rgba(176, 141, 87, 0) 0%,
+    rgba(176, 141, 87, 0.22) 45%,
+    rgba(176, 141, 87, 0) 100%
+  );
+  transform: translateX(-100%);
+  pointer-events: none;
+}
+
+.v2-interstitial.is-visible::after {
+  animation: v2-sheen var(--duration-curtain) var(--ease-curtain) 200ms both;
+}
+
+@keyframes v2-sheen {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.v2-interstitial__text {
+  font-family: var(--font-display);
+  font-size: var(--scale-h1);
+  font-weight: var(--weight-light);
+  line-height: var(--line-snug);
+  letter-spacing: var(--tracking-tight);
+  max-width: 22ch;
+  color: var(--color-gold-faint);
+  /* Clipped to its own box so it rises out of the black, not into it. */
+  clip-path: inset(0 0 100% 0);
+  transform: translateY(24px);
+  transition: clip-path var(--duration-curtain) var(--ease-curtain),
+    transform var(--duration-curtain) var(--ease-curtain);
+}
+
+.v2-interstitial.is-visible .v2-interstitial__text {
+  clip-path: inset(0 0 0 0);
+  transform: translateY(0);
+}
+
+/* ---- the two-column argument ------------------------------------------- */
+
+.v2-manifesto {
+  background: var(--color-wall);
+}
+
+.v2-manifesto__grid {
+  display: grid;
+  grid-template-columns: 0.85fr 1fr;
+  gap: var(--space-2xl);
+  align-items: center;
+}
+
+.v2-manifesto__image {
+  /* Slow counter-drift against the copy column. */
+  --drift: calc((var(--progress, 0.5) - 0.5) * -64px);
+  transform: translateY(var(--drift));
+}
+
+.v2-manifesto__frame {
+  margin: 0;
+  background: var(--frame-bg);
+  padding: var(--frame-mat);
+  border: var(--frame-border-inner);
+  border-radius: var(--radius-frame);
+  box-shadow: var(--shadow-frame);
+  /* Wipes open from the bottom edge as the section enters. */
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path var(--duration-curtain) var(--ease-curtain),
+    box-shadow var(--duration-base) var(--ease-standard);
+}
+
+.v2-manifesto__grid.is-visible .v2-manifesto__frame {
+  clip-path: inset(0 0 0 0);
+}
+
+.v2-manifesto__frame img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  display: block;
+}
+
+.v2-manifesto__heading {
+  margin-top: var(--space-sm);
+  font-size: var(--scale-h1);
+  max-width: 14ch;
+  text-wrap: balance;
+}
+
+.v2-manifesto__text {
+  margin-top: var(--space-lg);
+  font-size: var(--scale-body-lg);
+  line-height: var(--line-relaxed);
+  color: var(--color-ink-soft);
+  max-width: 46ch;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity var(--duration-slow) var(--ease-enter),
+    transform var(--duration-slow) var(--ease-enter);
+}
+
+.v2-manifesto__text + .v2-manifesto__text {
+  margin-top: var(--space-md);
+}
+
+.v2-manifesto__grid.is-visible .v2-manifesto__text {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 900px) {
+  .v2-manifesto__grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+
+  .v2-manifesto__image {
+    max-width: 420px;
+    --drift: 0px;
+  }
+
+  .v2-manifesto__heading,
+  .v2-manifesto__text {
+    max-width: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v2-manifesto__image {
+    transform: none;
+  }
+
+  .v2-interstitial__text,
+  .v2-manifesto__frame {
+    clip-path: none;
+  }
+}

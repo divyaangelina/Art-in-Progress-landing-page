@@ -112,6 +112,14 @@ export const theme = {
     plaque: "0 1px 0 rgba(28, 27, 25, 0.08)",
     card: "0 1px 3px rgba(28, 27, 25, 0.05), 0 12px 32px -12px rgba(28, 27, 25, 0.18)",
     focusRing: "0 0 0 3px rgba(176, 141, 87, 0.35)",
+
+    // Dramatic lighting (v2) — a hung painting under a real gallery spot
+    frameLit:
+      "0 2px 4px rgba(0, 0, 0, 0.4), 0 48px 88px -32px rgba(0, 0, 0, 0.75), 0 0 120px -40px rgba(255, 244, 220, 0.45)",
+    glowGold: "0 0 0 1px rgba(176, 141, 87, 0.4), 0 0 32px rgba(176, 141, 87, 0.28)",
+    glowGoldStrong:
+      "0 0 0 1px rgba(176, 141, 87, 0.6), 0 0 56px rgba(176, 141, 87, 0.45)",
+    nodeLit: "0 0 0 6px rgba(176, 141, 87, 0.14), 0 0 24px rgba(176, 141, 87, 0.55)",
   },
 
   motion: {
@@ -122,13 +130,35 @@ export const theme = {
       slow: "800ms",
       spotlight: "2400ms", // hero spotlight illumination sequence
       curtain: "1400ms",
+
+      // v2 — longer, more cinematic beats
+      reveal: "1100ms", // masked word / line reveals
+      drift: "1800ms", // slow parallax settle
+      ignite: "600ms", // a timeline node coming alight
     },
     easing: {
       standard: "cubic-bezier(0.22, 1, 0.36, 1)", // gentle deceleration
       enter: "cubic-bezier(0.16, 1, 0.3, 1)",
       exit: "cubic-bezier(0.7, 0, 0.84, 0)",
       linear: "linear",
+
+      // v2 — a heavier, more theatrical curve for masked reveals
+      curtain: "cubic-bezier(0.19, 1, 0.22, 1)",
     },
+    // Delay between each item in a staggered sequence (words, cards, nodes)
+    stagger: {
+      tight: 45,
+      base: 90,
+      loose: 150,
+    },
+  },
+
+  // Timeline (v2) — the progress rail and its milestone nodes
+  timeline: {
+    railWidth: "2px",
+    railTrack: "rgba(176, 141, 87, 0.16)",
+    nodeSize: "14px",
+    nodeSizeCurrent: "20px",
   },
 
   // Frame styles for framed artwork throughout the site (hero, feature cards)

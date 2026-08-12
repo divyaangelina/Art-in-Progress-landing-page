@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import FramedArtwork from "./FramedArtwork";
-import { galleryImages } from "../theme/assets";
+import { galleryImages } from "../../../theme/assets";
 import "../styles/Hero.css";
 
 // The hero establishes the museum aesthetic in one orchestrated sequence:

@@ -1,0 +1,168 @@
+.v2-waitlist {
+  position: relative;
+  background: #0B0A09;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* Pointer-tracked light, matching the hero's rig. */
+.v2-waitlist__light {
+  position: absolute;
+  inset: 0;
+  --px: 50%;
+  --py: 50%;
+}
+
+.v2-waitlist__pointerlight {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle 420px at var(--px) var(--py),
+    rgba(255, 244, 220, 0.08) 0%,
+    rgba(255, 244, 220, 0) 68%
+  );
+  pointer-events: none;
+}
+
+.v2-waitlist__inner {
+  position: relative;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.v2-waitlist .eyebrow {
+  color: var(--color-gold-faint);
+}
+
+.v2-waitlist__heading {
+  margin-top: var(--space-sm);
+  font-size: var(--scale-h1);
+  color: var(--color-marble);
+}
+
+.v2-waitlist__subhead,
+.v2-waitlist__form,
+.v2-waitlist__thankyou {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity var(--duration-slow) var(--ease-enter) 500ms,
+    transform var(--duration-slow) var(--ease-enter) 500ms;
+}
+
+.v2-waitlist__form {
+  transition-delay: 700ms;
+}
+
+.v2-waitlist__inner.is-visible .v2-waitlist__subhead,
+.v2-waitlist__inner.is-visible .v2-waitlist__form,
+.v2-waitlist__inner.is-visible .v2-waitlist__thankyou {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.v2-waitlist__subhead {
+  margin-top: var(--space-sm);
+  font-size: var(--scale-body-lg);
+  color: var(--color-gold-faint);
+}
+
+.v2-waitlist__form {
+  margin-top: var(--space-xl);
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.v2-waitlist__input {
+  flex: 1 1 320px;
+  max-width: 380px;
+  background: rgba(250, 248, 243, 0.03);
+  border: 1px solid rgba(217, 195, 152, 0.35);
+  color: var(--color-marble);
+  padding: 1.05rem 1.25rem;
+  font-size: var(--scale-body);
+  font-family: var(--font-body);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard),
+    background var(--duration-fast) var(--ease-standard);
+}
+
+.v2-waitlist__input::placeholder {
+  color: var(--color-ink-faint);
+}
+
+.v2-waitlist__input:focus {
+  outline: none;
+  border-color: var(--color-gold);
+  background: rgba(250, 248, 243, 0.06);
+  box-shadow: var(--shadow-glow-gold);
+}
+
+/* Same fill-from-below treatment as the hero CTA, so the page's two
+   buttons behave identically. */
+.v2-waitlist__button {
+  position: relative;
+  background: var(--color-gold);
+  color: var(--color-night);
+  border: 1px solid var(--color-gold);
+  padding: 1.05rem 2.25rem;
+  font-family: var(--font-plaque);
+  font-size: var(--scale-caption);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  isolation: isolate;
+  transition: box-shadow var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+.v2-waitlist__button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--color-spotlight-warm);
+  transform: translateY(101%);
+  transition: transform var(--duration-base) var(--ease-curtain);
+}
+
+.v2-waitlist__button:hover,
+.v2-waitlist__button:focus-visible {
+  box-shadow: var(--shadow-glow-gold-strong);
+}
+
+.v2-waitlist__button:hover::before,
+.v2-waitlist__button:focus-visible::before {
+  transform: translateY(0);
+}
+
+.v2-waitlist__button-label {
+  position: relative;
+}
+
+.v2-waitlist__thankyou {
+  margin-top: var(--space-xl);
+  font-family: var(--font-display);
+  font-size: var(--scale-h3);
+  color: var(--color-gold-faint);
+}
+
+.v2-waitlist__error {
+  margin-top: var(--space-sm);
+  color: #d98f7c;
+  font-size: var(--scale-caption);
+}
+
+@media (max-width: 520px) {
+  .v2-waitlist__form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .v2-waitlist__input {
+    max-width: none;
+  }
+}
