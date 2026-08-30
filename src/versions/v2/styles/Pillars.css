@@ -77,7 +77,10 @@
 
 .v2-pillar__frame img {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  /* Portrait, matching the Manifesto frame. The pillar photography is all
+     portrait; at the 4/3 this slot used to be, `cover` cut 36-50% off each
+     one — enough to behead the raised hands in the networking shot. */
+  aspect-ratio: 4 / 5;
   object-fit: cover;
   display: block;
   /* Uncovered from the bottom up as the card enters, then eased in on

@@ -219,6 +219,30 @@
   display: block;
 }
 
+/* The logo arrives already framed — an ornate gilt border on a transparent
+   field. Everything this figure normally draws (cream mat, hairline border,
+   lit drop shadow) would be a second frame around the first, so the variant
+   strips it back to the mark alone.
+
+   The source file shipped with the black background flattened in. It was
+   un-premultiplied to real transparency rather than hidden with
+   `mix-blend-mode: screen` — a blend would have been silently cancelled here
+   anyway, because .v2-hero__artwork's parallax transform opens its own
+   stacking context and leaves nothing behind the image to blend against. */
+.v2-hero__frame.is-logo {
+  background: none;
+  padding: 0;
+  border: none;
+  box-shadow: none;
+}
+
+.v2-hero__frame.is-logo img {
+  /* The mark is square, not the 4/5 the photographic slot assumes — cover
+     would crop its frame and the sketch lines spilling past the edge. */
+  aspect-ratio: auto;
+  object-fit: contain;
+}
+
 /* Museum wall label, hanging under the frame. */
 .v2-hero__plaque {
   position: absolute;

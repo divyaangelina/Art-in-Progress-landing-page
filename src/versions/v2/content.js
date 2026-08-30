@@ -12,23 +12,23 @@ export const content = {
     eyebrow: "Art in Progress",
     // Rendered word by word from behind a mask. Keep it short — long
     // headlines fight the stagger.
-    headline: "A gallery for artists who aren't finished yet.",
+    headline: "A platform for artists to turn potential into progress.",
     subhead:
-      "Targeted networking, curated opportunities, and structured feedback — replacing the feed with a room worth walking into.",
+      "Targeted networking, curated opportunities, and structured feedback — replacing the feed with a path worth walking through.",
     cta: "Join the waitlist",
     scrollCue: "Scroll to enter",
   },
 
   manifesto: {
     eyebrow: "Why we exist",
-    heading: "Not every piece worth seeing is finished.",
+    heading: "When your creative journey becomes your career.",
     // Each paragraph reveals as its own line-block on scroll.
     paragraphs: [
-      "A sketch left mid-line. A palette that didn't work. Three attempts before the fourth one lands. This is what making actually looks like — and almost none of it survives on a feed built for polish and scroll.",
-      "Art in Progress is a room for the work in between: the drafts, the experiments, the honest misses. A place to be seen by people who understand what growth costs, and who are building alongside you rather than just watching.",
+      "Art in Progress is more than a portfolio, it's a community that helps you build your future. Too many times, artists have heard that they can't make a living from their art. That's not true.",
+      "In this digital age, we strive to provide every artist with the opportunity to turn their passion into a career and make an impact on the world.",
     ],
     // Oversized quiet statement that wipes in between sections.
-    interstitial: "The unfinished deserves a wall too.",
+    interstitial: "Your art. Your journey. Your career.",
   },
 
   pillars: {
@@ -40,21 +40,21 @@ export const content = {
         imageKey: "discoverImage",
         title: "Targeted Networking",
         description:
-          "Meet the artists, mentors, and collaborators working in your medium — not a global feed of strangers.",
+          "Find your people. Collaborating with others can take your art to the next level.",
       },
       {
         numeral: "II",
         imageKey: "connectImage",
         title: "Curated Opportunities",
         description:
-          "Open calls, residencies, and commissions selected for where you actually are in your practice.",
+          "Challenges, Scholarships, and Auditions. More opportunities means more chances to grow.",
       },
       {
         numeral: "III",
         imageKey: "feedbackImage",
         title: "Structured Feedback",
         description:
-          "Critique built for growth — specific, actionable, and from people who understand the craft.",
+          "Grow deliberately. Get feedback that helps you improve, not just applause for what you already do well.",
       },
     ],
   },
@@ -68,7 +68,7 @@ export const content = {
     milestones: [
       {
         marker: "01",
-        date: "Autumn 2025",
+        date: "Spring 2026",
         title: "The idea takes shape",
         description:
           "Conversations with art students and early-career artists about what the feed was costing them. The shape of the problem got clear.",
@@ -76,34 +76,34 @@ export const content = {
       },
       {
         marker: "02",
-        date: "Winter 2025",
-        title: "First prototype",
+        date: "Summer 2026",
+        title: "Artist Interviews",
         description:
-          "A rough build of the critique loop — post an unfinished piece, get structured feedback back. Ugly, but it worked.",
+          "30+ conversations with artists about their experiences and needs to pinpoint real issues and painpoints.",
         status: "done",
       },
       {
         marker: "03",
-        date: "Spring 2026",
-        title: "The gallery model",
+        date: "Summer 2026",
+        title: "Initial Launch",
         description:
-          "Rebuilt around rooms instead of a feed. Networking, opportunities, and feedback became three deliberate spaces.",
+          "Received feedback from 20 early adopters. Found the right balance of features and solutions.",
         status: "done",
       },
       {
         marker: "04",
         date: "Now",
-        title: "Private studio beta",
+        title: "Landing Page",
         description:
-          "A small group of artists using it daily while we sand down the edges. This is where the waitlist starts feeding in.",
+          "Get a glimpse of what's coming. A Landing page to grow our waitlist and share our vision with the world.",
         status: "current",
       },
       {
         marker: "05",
         date: "Next",
-        title: "Opening night",
+        title: "Launch Platform",
         description:
-          "Doors open to everyone on the list. First public exhibition of work in progress.",
+          "Platform opens to everyone. First public exhibition of Art in Progress. Be the first to know. Sign up for our waiylist.",
         status: "next",
       },
     ],
@@ -115,8 +115,15 @@ export const content = {
     subhead: "Be among the first artists through the door.",
     placeholder: "your@email.com",
     cta: "Join the waitlist",
+    // Button label while the request is in flight.
+    ctaPending: "Adding you…",
     success: "You're on the list. We'll be in touch before the doors open.",
+    // Shown when the address itself is the problem.
     error: "Enter a valid email to join the waitlist.",
+    // Shown when the address was fine but the request failed — a dropped
+    // connection, or the waitlist service being down. Deliberately distinct
+    // from `error`: retrying makes sense here, retyping does not.
+    networkError: "Something went wrong on our end. Please try again.",
   },
 
   footer: "Art in Progress — the gallery opens soon.",

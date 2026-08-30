@@ -5,35 +5,60 @@
 // else. To swap an image, change its value in this file only — no component
 // should ever contain a hardcoded image path.
 //
-// Placeholder images are sourced from Unsplash for now. Replace each value
-// with a final asset path (e.g. "/images/hero-painting.jpg") when ready.
+// Final photography lives in public/images/ and is referenced by
+// root-relative path. Source files are kept in new_photos/ at the project
+// root; that folder is not served, so a new photo must be copied into
+// public/images/ before its path here will resolve.
 // ============================================================================
 
 export const galleryImages = {
-  // Hero — the featured "painting" behind the headline
+  // Hero — the brand mark, hung as the featured piece on the gallery wall.
+  // The file is square with a solid black backdrop baked in; the .is-logo
+  // frame variant in Hero.css strips the cream mat and blends that black
+  // into the dark wall rather than the file being re-exported transparent.
+  logo: {
+    src: "/logo.png",
+    alt:
+      "The Art in Progress mark — an ornate gilt frame holding the words " +
+      "'Art in Progress', with unfinished sketch lines spilling past its edge",
+  },
+
+  // Unused — the hero shows the logo above instead. Kept as a reference for
+  // the framed-artwork treatment if a photograph ever returns to this slot.
   heroPainting: {
     src: "https://images.unsplash.com/photo-1541961017774-22349e4a1262?auto=format&fit=crop&w=1400&q=80",
     alt: "An abstract expressionist painting in warm ochre and charcoal tones, lit as if hanging in a gallery",
   },
 
-  // About — the large single image beside the philosophy copy
+  // Manifesto — the single large image beside the "Why we exist" copy
   aboutImage: {
-    src: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=1200&q=80",
-    alt: "A young artist's open sketchbook covered in charcoal studies and studio notes",
+    src: "/images/why_we_exist.jpg",
+    alt:
+      "A sweeping carved staircase curving upward through a sunlit hall, " +
+      "its ornate ironwork balustrade climbing out of frame",
   },
 
-  // Features — one image per pillar, framed as a small gallery painting
+  // Pillars — one image per pillar, framed as a small gallery painting.
+  // Key names predate the current pillar titles; content.js maps them by
+  // `imageKey`, so the pairing is: discover -> Targeted Networking,
+  // connect -> Curated Opportunities, feedback -> Structured Feedback.
   discoverImage: {
-    src: "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&w=900&q=80",
-    alt: "A wall of framed artworks arranged in a curated gallery hang",
+    src: "/images/targeted_networking.jpg",
+    alt:
+      "A close circle of people stretching their hands up to meet above " +
+      "their heads, lit from directly overhead",
   },
   connectImage: {
-    src: "https://images.unsplash.com/photo-1531913764164-f85c52e6e654?auto=format&fit=crop&w=900&q=80",
-    alt: "Two artists in quiet conversation in front of a hung painting",
+    src: "/images/curated_opportunities.jpg",
+    alt:
+      "A station platform billboard reading \"Dreams don't work until you " +
+      "do\", two commuters passing it in motion blur",
   },
   feedbackImage: {
-    src: "https://images.unsplash.com/photo-1579762593175-20226054cad0?auto=format&fit=crop&w=900&q=80",
-    alt: "A close, focused view of hands annotating a printed artwork proof",
+    src: "/images/structured_feedback.jpg",
+    alt:
+      "A mosaic stop sign whose tiles have been reset so the word reads " +
+      "START in place of STOP",
   },
 };
 

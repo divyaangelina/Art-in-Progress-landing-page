@@ -41,7 +41,9 @@ export default function Hero({ onJoinWaitlist }) {
 
       <div className="v2-hero__content container">
         <div className="v2-hero__copy">
-          <p className="eyebrow v2-hero__eyebrow">{content.hero.eyebrow}</p>
+          {content.hero.eyebrow && (
+            <p className="eyebrow v2-hero__eyebrow">{content.hero.eyebrow}</p>
+          )}
 
           <RevealText
             as="h1"
@@ -63,15 +65,11 @@ export default function Hero({ onJoinWaitlist }) {
             Keeping them separate means the drift never fights the entrance
             animation, which lives on the frame itself. */}
         <div className="v2-hero__artwork" ref={parallaxRef}>
-          <figure className="v2-hero__frame">
-            <img
-              src={galleryImages.heroPainting.src}
-              alt={galleryImages.heroPainting.alt}
-            />
-            <figcaption className="v2-hero__plaque">
-              <span>Untitled</span>
-              <span>In progress</span>
-            </figcaption>
+          {/* The brand mark hangs here as the featured piece. It arrives
+              already framed, so `is-logo` strips the cream mat and border
+              this figure would otherwise draw around it. */}
+          <figure className="v2-hero__frame is-logo">
+            <img src={galleryImages.logo.src} alt={galleryImages.logo.alt} />
           </figure>
         </div>
       </div>
