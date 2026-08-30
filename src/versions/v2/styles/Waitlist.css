@@ -139,6 +139,23 @@
   transform: translateY(0);
 }
 
+/* In flight. The gold dims and the hover fill is suppressed, so the button
+   reads as busy rather than merely unresponsive — without changing size and
+   shifting the row, since the pending label is a different length. */
+.v2-waitlist__button:disabled,
+.v2-waitlist__input:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.v2-waitlist__button:disabled {
+  box-shadow: none;
+}
+
+.v2-waitlist__button:disabled::before {
+  transform: translateY(101%);
+}
+
 .v2-waitlist__button-label {
   position: relative;
 }
