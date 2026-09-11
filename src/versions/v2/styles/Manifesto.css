@@ -39,9 +39,9 @@
   font-weight: var(--weight-light);
   line-height: var(--line-snug);
   letter-spacing: var(--tracking-tight);
-  max-width: 22ch;
+  max-width: none;
   color: var(--color-gold-faint);
-  /* Clipped to its own box so it rises out of the black, not into it. */
+
   clip-path: inset(0 0 100% 0);
   transform: translateY(24px);
   transition: clip-path var(--duration-curtain) var(--ease-curtain),
@@ -51,6 +51,13 @@
 .v2-interstitial.is-visible .v2-interstitial__text {
   clip-path: inset(0 0 0 0);
   transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .v2-interstitial__text {
+    max-width: 100%;
+    font-size: clamp(2.5rem, 8vw, var(--scale-h1));
+  }
 }
 
 /* ---- the two-column argument ------------------------------------------- */

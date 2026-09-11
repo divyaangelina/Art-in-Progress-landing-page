@@ -29,8 +29,11 @@ export default function V2() {
       <Timeline />
       <Waitlist ref={waitlistRef} />
       <footer className="site-footer">
-        <p>{content.footer}</p>
+        <p>© 2026 Art in Progress. All rights reserved.</p>
+        <a href="/privacy">Privacy Policy</a>
       </footer>
+
+      {window.location.hash === "#privacy" && <PrivacyPolicy />}
     </>
   );
 }

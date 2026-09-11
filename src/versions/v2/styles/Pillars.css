@@ -66,6 +66,9 @@
   border-radius: var(--radius-frame);
   box-shadow: var(--shadow-card);
   overflow: hidden;
+
+  aspect-ratio: 4 / 5;
+
   transition: box-shadow var(--duration-base) var(--ease-standard),
     transform var(--duration-base) var(--ease-standard);
 }
@@ -77,10 +80,7 @@
 
 .v2-pillar__frame img {
   width: 100%;
-  /* Portrait, matching the Manifesto frame. The pillar photography is all
-     portrait; at the 4/3 this slot used to be, `cover` cut 36-50% off each
-     one — enough to behead the raised hands in the networking shot. */
-  aspect-ratio: 4 / 5;
+  height: 100%;
   object-fit: cover;
   display: block;
   /* Uncovered from the bottom up as the card enters, then eased in on
@@ -124,6 +124,22 @@
   transition: transform var(--duration-base) var(--ease-curtain);
 }
 
+.v2-hero .eyebrow {
+  font-size: 1rem;
+}
+
+.v2-pillars__header .eyebrow {
+  font-size: 1.1rem;
+}
+
+.v2-timeline__header .eyebrow {
+  font-size: 1.1rem;
+}
+
+.v2-manifesto .eyebrow {
+  font-size: 1.25rem;
+}
+
 .v2-pillar:hover .v2-pillar__plaque::before {
   transform: scaleX(1);
 }
@@ -131,10 +147,10 @@
 .v2-pillar__title {
   font-family: var(--font-plaque);
   font-size: var(--scale-caption);
-  font-weight: var(--weight-regular);
+  font-weight: var(--weight-semibold);
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
-  color: var(--color-ink);
+  color: #000000;
 }
 
 .v2-pillar__description {

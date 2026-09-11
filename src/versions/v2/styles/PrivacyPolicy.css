@@ -1,0 +1,48 @@
+.privacy-policy {
+  background: var(--color-wall);
+  color: var(--color-ink);
+  min-height: 100vh;
+  padding: clamp(6rem, 12vw, 10rem) 0;
+}
+
+.privacy-policy__container {
+  width: min(900px, calc(100% - 3rem));
+  margin: 0 auto;
+}
+
+.privacy-policy h1 {
+  margin-top: var(--space-sm);
+  font-family: var(--font-display);
+  font-size: var(--scale-h1);
+  font-weight: var(--weight-light);
+}
+
+.privacy-policy__updated {
+  margin-top: var(--space-sm);
+  color: var(--color-ink-soft);
+  font-size: var(--scale-body);
+}
+
+.privacy-policy section {
+  margin-top: var(--space-2xl);
+}
+
+.privacy-policy h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: var(--weight-light);
+}
+
+.privacy-policy section p {
+  max-width: 70ch;
+  margin-top: var(--space-sm);
+  font-size: var(--scale-body-lg);
+  line-height: var(--line-relaxed);
+  color: var(--color-ink-soft);
+}
+
+.privacy-policy a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

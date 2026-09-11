@@ -18,9 +18,6 @@ function Pillar({ item, delay }) {
       className={`v2-pillar ${inView ? "is-visible" : ""}`}
       style={{ "--stagger": `${delay}ms` }}
     >
-      <span className="v2-pillar__numeral" aria-hidden="true">
-        {item.numeral}
-      </span>
 
       <div className="v2-pillar__frame">
         <img src={image.src} alt={image.alt} loading="lazy" />

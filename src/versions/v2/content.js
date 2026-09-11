@@ -14,7 +14,7 @@ export const content = {
     // headlines fight the stagger.
     headline: "A platform for artists to turn potential into progress.",
     subhead:
-      "Targeted networking, curated opportunities, and structured feedback — replacing the feed with a path worth walking through.",
+      "Targeted networking, curated opportunities, and structured feedback. We’re replacing the feed with a path worth walking through.",
     cta: "Join the waitlist",
     scrollCue: "Scroll to enter",
   },
@@ -33,14 +33,14 @@ export const content = {
 
   pillars: {
     eyebrow: "The pillars",
-    heading: "Three rooms, one gallery.",
+    heading: "Three rooms. One gallery.",
     items: [
       {
         numeral: "I",
         imageKey: "discoverImage",
         title: "Targeted Networking",
         description:
-          "Find your people. Collaborating with others can take your art to the next level.",
+          "Find your people. Collaborating with others can take your art to the next level in unexpected ways.",
       },
       {
         numeral: "II",
@@ -63,7 +63,7 @@ export const content = {
     eyebrow: "The build",
     heading: "Where we are.",
     subhead:
-      "We are building this in the open — the same way we are asking artists to work.",
+    "A work in progress, built alongside the artists it’s for.",
     // status: "done" | "current" | "next"
     milestones: [
       {
@@ -71,7 +71,7 @@ export const content = {
         date: "Spring 2026",
         title: "The idea takes shape",
         description:
-          "Conversations with art students and early-career artists about what the feed was costing them. The shape of the problem got clear.",
+          "We started by listening. Conversations with artists revealed a gap worth solving.",
         status: "done",
       },
       {
@@ -79,7 +79,7 @@ export const content = {
         date: "Summer 2026",
         title: "Artist Interviews",
         description:
-          "30+ conversations with artists about their experiences and needs to pinpoint real issues and painpoints.",
+          "30+ conversations with artists on their experiences and needs to pinpoint issues and pain points.",
         status: "done",
       },
       {
@@ -103,7 +103,7 @@ export const content = {
         date: "Next",
         title: "Launch Platform",
         description:
-          "Platform opens to everyone. First public exhibition of Art in Progress. Be the first to know. Sign up for our waiylist.",
+          "Platform opens to everyone. First exhibition of Art in Progress. Be the first to know. Join the waitlist.",
         status: "next",
       },
     ],
@@ -126,7 +126,7 @@ export const content = {
     networkError: "Something went wrong on our end. Please try again.",
   },
 
-  footer: "Art in Progress — the gallery opens soon.",
+  footer: "Art in Progress",
 };
 
 export default content;

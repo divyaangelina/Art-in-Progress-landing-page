@@ -75,8 +75,12 @@ export default function Timeline() {
             className="v2-timeline__heading"
             text={content.timeline.heading}
           />
-          <p className="v2-timeline__subhead">{content.timeline.subhead}</p>
-        </div>
+          <p className="v2-timeline__subhead">
+            A work in progress, built
+            <br />
+            alongside the artists it’s for.
+          </p>
+          </div>
 
         <div className="v2-timeline__track" ref={trackRef}>
           <div className="v2-timeline__rail" aria-hidden="true" ref={railRef}>

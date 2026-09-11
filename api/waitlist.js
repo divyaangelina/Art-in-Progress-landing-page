@@ -1,27 +1,20 @@
 // ============================================================================
-// api/waitlist.js — the only server-side code in this project.
-// ----------------------------------------------------------------------------
-// Everything else here is a static file that gets copied to the visitor's
-// browser and runs on their machine. This file does not. Vercel runs any
-// file under /api on its own servers, and that difference is the entire
-// reason this exists: the Buttondown API key lives here, where a visitor
-// cannot read it. Calling Buttondown straight from Waitlist.jsx would ship
-// the key inside the JavaScript bundle for anyone to lift out of DevTools.
+// api/waitlist.js — server-side waitlist endpoint
 //
-// Flow: the browser POSTs { email } here -> this attaches the key and
-// forwards it to Buttondown -> this returns a plain ok/error the UI renders.
+// Flow:
+//   browser POSTs { email }
+//        ↓
+//   Vercel runs this function
+//        ↓
+//   Google Sheets API appends the email to the waitlist spreadsheet
 //
-// Requires one environment variable, set in the Vercel dashboard:
-//   BUTTONDOWN_API_KEY — from buttondown.com, Settings -> Programming
-//
-// Note: `npm run dev` runs Vite alone and does NOT execute this file, so the
-// form will 404 locally. Use `vercel dev` to run both together.
+// Google credentials stay on the server and are never sent to the browser.
 // ============================================================================
 
-const BUTTONDOWN_ENDPOINT = "https://api.buttondown.com/v1/subscribers";
+import { google } from "googleapis";
 
 export default async function handler(request, response) {
-  // The form only ever POSTs. Anything else is someone poking at the URL.
+  // The form only ever POSTs.
   if (request.method !== "POST") {
     response.setHeader("Allow", "POST");
     return response.status(405).json({ error: "Method not allowed." });
@@ -29,63 +22,63 @@ export default async function handler(request, response) {
 
   const email = String(request.body?.email ?? "").trim();
 
-  // Validated again here even though Waitlist.jsx already checked. The
-  // client-side check is a convenience for real users; it is trivially
-  // bypassed by anyone POSTing straight to this URL, so the server cannot
-  // trust that it happened.
+  // Validate again on the server.
   if (!isPlausibleEmail(email)) {
-    return response.status(400).json({ error: "Enter a valid email address." });
+    return response
+      .status(400)
+      .json({ error: "Enter a valid email address." });
   }
 
-  const apiKey = process.env.BUTTONDOWN_API_KEY;
-  if (!apiKey) {
-    // A misconfiguration, not a user mistake — log the real cause, but stay
-    // vague in the response. Internal detail in the UI helps nobody.
-    console.error("BUTTONDOWN_API_KEY is not set in this environment.");
+  const spreadsheetId = process.env.GOOGLE_SHEET_ID;
+  const serviceAccountEmail =
+    process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+  const privateKey = process.env.GOOGLE_PRIVATE_KEY;
+
+  // Make sure all required Google credentials exist.
+  if (!spreadsheetId || !serviceAccountEmail || !privateKey) {
+    console.error("Google Sheets environment variables are not configured.");
+
     return response
       .status(500)
       .json({ error: "The waitlist is temporarily unavailable." });
   }
 
   try {
-    const buttondown = await fetch(BUTTONDOWN_ENDPOINT, {
-      method: "POST",
-      headers: {
-        Authorization: `Token ${apiKey}`,
-        "Content-Type": "application/json",
+    const auth = new google.auth.GoogleAuth({
+      credentials: {
+        client_email: serviceAccountEmail,
+        private_key: privateKey.replace(/\\n/g, "\n"),
       },
-      body: JSON.stringify({ email_address: email, type: "regular" }),
+      scopes: ["https://www.googleapis.com/auth/spreadsheets"],
     });
 
-    if (buttondown.ok) {
-      return response.status(200).json({ ok: true });
-    }
+    const sheets = google.sheets({
+      version: "v4",
+      auth,
+    });
 
-    const detail = await buttondown.text();
+    await sheets.spreadsheets.values.append({
+      spreadsheetId,
+      range: "Waitlist!A:B",
+      valueInputOption: "USER_ENTERED",
+      insertDataOption: "INSERT_ROWS",
+      requestBody: {
+        values: [[email, new Date().toISOString()]],
+      },
+    });
 
-    // Already subscribed is a success from the visitor's point of view: they
-    // asked to be on the list and they are on the list. Returning an error
-    // here would just make them think it failed and submit again.
-    if (buttondown.status === 400 && /already|exists/i.test(detail)) {
-      return response.status(200).json({ ok: true, alreadySubscribed: true });
-    }
-
-    console.error("Buttondown rejected the subscribe:", buttondown.status, detail);
-    return response
-      .status(502)
-      .json({ error: "We couldn't add you just now. Please try again." });
+    return response.status(200).json({ ok: true });
   } catch (error) {
-    // Network failure, DNS, timeout — Buttondown was unreachable.
-    console.error("Buttondown request failed:", error);
+    console.error("Google Sheets request failed:", error);
+
     return response
       .status(502)
       .json({ error: "We couldn't add you just now. Please try again." });
   }
 }
 
-// Deliberately loose. Email syntax is notoriously hard to validate correctly
-// and an over-strict pattern rejects real addresses; the only true test is
-// whether mail arrives. This catches typos and junk, Buttondown does the rest.
+// Deliberately loose email validation.
+// This catches obvious mistakes without rejecting legitimate addresses.
 function isPlausibleEmail(value) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) && value.length <= 320;
 }
