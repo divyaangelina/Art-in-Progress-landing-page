@@ -16,9 +16,8 @@ const Waitlist = forwardRef(function Waitlist(_props, ref) {
   const spotlightRef = usePointerSpotlight();
   const [innerRef, inView] = useInView({ threshold: 0.35 });
 
-  // Posts to /api/waitlist, which is the only part of this project that runs
-  // on a server. It holds the Buttondown key so this component never has to
-  // — see the header comment in api/waitlist.js.
+  // Posts to the Netlify waitlist function, which runs on the server.
+  // Google credentials stay there and are never sent to the browser.
   async function handleSubmit(event) {
     event.preventDefault();
     if (pending) return; // guard against a double-click mid-request
@@ -32,7 +31,7 @@ const Waitlist = forwardRef(function Waitlist(_props, ref) {
     setPending(true);
 
     try {
-      const response = await fetch("/api/waitlist", {
+      const response = await fetch("/.netlify/functions/waitlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email.trim() }),
