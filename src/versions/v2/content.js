@@ -12,9 +12,9 @@ export const content = {
     eyebrow: "Art in Progress",
     // Rendered word by word from behind a mask. Keep it short — long
     // headlines fight the stagger.
-    headline: "An online platform for artists to turn potential into progress.",
+    headline: "A platform where artists turn potential into progress.",
     subhead:
-      "Targeted networking, curated opportunities, and structured feedback. We’re replacing the feed with a path worth walking through.",
+      "Targeted networking, curated opportunities, and structured feedback. A brand new social platform for young artists.",
     cta: "Join the waitlist",
     scrollCue: "Scroll to enter",
   },
