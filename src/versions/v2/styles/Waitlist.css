@@ -182,8 +182,9 @@
   }
 
   .v2-waitlist__input {
+    flex: 0 0 72px;
+    width: 100%;
     max-width: none;
-    height: 72px;
     box-sizing: border-box;
   }
 
