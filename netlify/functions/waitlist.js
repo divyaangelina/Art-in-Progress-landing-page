@@ -15,6 +15,7 @@ export default async function handler(request) {
     const body = await request.json();
     const email = String(body?.email ?? "").trim();
 
+    // Validate the email on the server.
     if (!isPlausibleEmail(email)) {
       return new Response(
         JSON.stringify({ error: "Enter a valid email address." }),
@@ -30,6 +31,7 @@ export default async function handler(request) {
       process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
     const privateKey = process.env.GOOGLE_PRIVATE_KEY;
 
+    // Make sure all required Google credentials exist.
     if (!spreadsheetId || !serviceAccountEmail || !privateKey) {
       console.error(
         "Google Sheets environment variables are not configured."
@@ -51,7 +53,9 @@ export default async function handler(request) {
         client_email: serviceAccountEmail,
         private_key: privateKey.replace(/\\n/g, "\n"),
       },
-      scopes: ["https://www.googleapis.com/auth/spreadsheets"],
+      scopes: [
+        "https://www.googleapis.com/auth/spreadsheets",
+      ],
     });
 
     const sheets = google.sheets({
@@ -59,6 +63,34 @@ export default async function handler(request) {
       auth,
     });
 
+    // Check the existing emails BEFORE adding anything.
+    const existing = await sheets.spreadsheets.values.get({
+      spreadsheetId,
+      range: "Waitlist!A:A",
+    });
+
+    const existingEmails = existing.data.values ?? [];
+
+    const alreadySignedUp = existingEmails.some(
+      (row) =>
+        String(row[0] ?? "").trim().toLowerCase() ===
+        email.toLowerCase()
+    );
+
+    // If the email already exists, don't add another row.
+    if (alreadySignedUp) {
+      return new Response(
+        JSON.stringify({
+          error: "You've already signed up with this email.",
+        }),
+        {
+          status: 409,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+    }
+
+    // Email is new, so add it to the spreadsheet.
     await sheets.spreadsheets.values.append({
       spreadsheetId,
       range: "Waitlist!A:B",
@@ -81,8 +113,8 @@ export default async function handler(request) {
 
     return new Response(
       JSON.stringify({
-        error: "We couldn't add you just now. Please try again.",
-      }),
+        error: error.message || "Unknown Google Sheets error.",
+    }),
       {
         status: 502,
         headers: { "Content-Type": "application/json" },
