@@ -97,7 +97,14 @@ export default async function handler(request) {
       valueInputOption: "USER_ENTERED",
       insertDataOption: "INSERT_ROWS",
       requestBody: {
-        values: [[email, new Date().toISOString()]],
+        values: [
+          [
+            email,
+            new Date().toLocaleString("en-US", {
+              timeZone: "America/New_York",
+          }),
+        ],
+      ],
       },
     });
 
