@@ -80,7 +80,8 @@
   background: rgba(250, 248, 243, 0.03);
   border: 1px solid rgba(217, 195, 152, 0.35);
   color: var(--color-marble);
-  padding: 1.05rem 1.25rem;
+  height: 72px;
+  box-sizing: border-box;
   font-size: var(--scale-body);
   font-family: var(--font-body);
   border-radius: var(--radius-sm);
@@ -174,6 +175,7 @@
 }
 
 @media (max-width: 520px) {
+
   .v2-waitlist__form {
     flex-direction: column;
     align-items: stretch;
@@ -181,5 +183,8 @@
 
   .v2-waitlist__input {
     max-width: none;
+    height: 72px;
+    box-sizing: border-box;
   }
+
 }
